@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { API_URL } from "@/constants/api.constants";
+import { UserData } from "@/constants/user.constants";
 
 interface UseFetchUserResult {
-  users: unknown[] | null;
+  users: UserData[] | null;
   loading: boolean;
   error: Error | null;
 }
 
 export const useFetchUser = (): UseFetchUserResult => {
-  const [users, setUsers] = useState<[]>([]);
+  const [users, setUsers] = useState<UserData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 

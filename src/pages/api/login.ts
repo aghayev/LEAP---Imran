@@ -1,40 +1,25 @@
-import { PASSWORD, USERNAME } from "@/constants/user.constants";
 import { NextApiRequest, NextApiResponse } from "next";
+import { PASSWORD, USERNAME } from "@/constants/user.constants";
+import { withCors, errorResponse, successResponse } from "@/utils/apiResponse.util";
 
-type LoginResponse = {
-  success: boolean;
-  data?: {
-    token: string | null;
-  };
-  error?: string;
-};
-export default function handler(
+export default withCors(function handler(
   req: NextApiRequest,
-  res: NextApiResponse<LoginResponse>
+  res: NextApiResponse
 ) {
+
   if (req.method !== "POST") {
-    return res
-      .status(405)
-      .json({ success: false, error: "Method not allowed" });
+    return res.status(405).json(errorResponse("Method not allowed"));
   }
 
   const { username, password } = req.body;
 
   if (username !== USERNAME || password !== PASSWORD) {
-    return res.status(401).json({
-      success: false,
-      error: "Invalid credentials",
-    });
+    return res.status(401).json(errorResponse("Invalid credentials"));
   }
 
   const token = "TOKEN_HERE";
 
   res.setHeader("Set-Cookie", `token=${token}; Path=/; HttpOnly`);
 
-  return res.status(200).json({
-    success: true,
-    data: {
-      token: token,
-    },
-  });
-}
+  return res.status(200).json(successResponse({token: token}))
+});

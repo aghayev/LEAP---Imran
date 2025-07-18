@@ -12,7 +12,7 @@ interface UseFetchUserReturn {
 
 export const useAuthentication = (): UseFetchUserReturn => {
   const login = async (credentials: LoginCredentials) => {
-    const response = await fetch(`${API_URL}/login`, {
+  const response = await fetch(`${API_URL}/login`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -29,12 +29,9 @@ export const useAuthentication = (): UseFetchUserReturn => {
   };
 
   const logout = async () => {
-    const response = await fetch(`http://api.mayhem.local:3000/api/logout`, {
+    const response = await fetch(`${API_URL}/logout`, {
       method: "POST",
       credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
     });
 
     const data = await response.json();
